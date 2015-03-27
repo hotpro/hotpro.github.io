@@ -4,7 +4,7 @@
   <title><![CDATA[Hotpro's Blog]]></title>
   <link href="http://hotpro.github.io/atom.xml" rel="self"/>
   <link href="http://hotpro.github.io/"/>
-  <updated>2015-03-26T21:55:26+00:00</updated>
+  <updated>2015-03-27T20:59:00+00:00</updated>
   <id>http://hotpro.github.io/</id>
   <author>
     <name><![CDATA[Yutao Hou]]></name>
@@ -27,6 +27,71 @@
 <p>Docker, for me, is an application running on a computer, which provides you lots of isolated containers to run your applications. <a href="https://www.docker.com/">Docker</a></p>
 
 <p>They both have some bugs for now. I like docker more. I am now using a docker image, which has builtin octopress. Very handy. <a href="https://github.com/aratana/docker-octopress">Docker Octopress</a></p>
+
+<h2>Troubleshooting</h2>
+
+<h3>Vagrant</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>vagrant SSH Timeout - Cant connect via ssh</span></code></pre></td></tr></table></div></figure>
+
+
+<p>refer to <a href="https://github.com/mitchellh/vagrant/issues/3860">https://github.com/mitchellh/vagrant/issues/3860</a></p>
+
+<h3>Octopress</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>gem install bundler
+</span><span class='line'>ERROR:  Loading command: install (LoadError)
+</span><span class='line'>    cannot load such file -- zlib
+</span><span class='line'>ERROR:  While executing gem ... (NameError)
+</span><span class='line'>    uninitialized constant Gem::Commands::InstallCommand</span></code></pre></td></tr></table></div></figure>
+
+
+<p>zlib1g-dev needs to be installed before ruby is installed.
+<code>sudo apt-get install zlib1g-dev</code></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>bundle install
+</span><span class='line'>Could not load OpenSSL.
+</span><span class='line'>You must recompile Ruby with OpenSSL support or change the sources in your Gemfile from 'https'
+</span><span class='line'>to 'http'. Instructions for compiling with OpenSSL using RVM are available at
+</span><span class='line'>http://rvm.io/packages/openssl.</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This is another dependency problem.
+Use this to solve both problems and some potential problems
+<code>sudo apt-get -y install build-essential zlib1g-dev libreadline-dev libssl-dev libcurl4-openssl-dev</code></p>
+
+<h3>Docker</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>docker can't connect to boot2docker because of tcp timeout</span></code></pre></td></tr></table></div></figure>
+
+
+<p>solution:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>boot2docker down # Shut down boot2docker VirtualBox bits
+</span><span class='line'>sudo route -nv add -net 192.168.56 -interface vboxnet0 # Add a static route
+</span><span class='line'>boot2docker up # Start up boot2docker, bring VirtualBox bits back up
+</span><span class='line'>$(boot2docker shellinit)
+</span><span class='line'>docker images # List images. This should just work.</span></code></pre></td></tr></table></div></figure>
+
+
+<p>refer to <a href="https://github.com/boot2docker/boot2docker/issues/392#issuecomment-54588412">https://github.com/boot2docker/boot2docker/issues/392#issuecomment-54588412</a></p>
 ]]></content>
   </entry>
   

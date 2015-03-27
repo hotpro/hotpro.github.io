@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Octopress | Hotpro's Blog]]></title>
   <link href="http://hotpro.github.io/blog/categories/octopress/atom.xml" rel="self"/>
   <link href="http://hotpro.github.io/"/>
-  <updated>2015-03-26T21:55:26+00:00</updated>
+  <updated>2015-03-27T20:59:00+00:00</updated>
   <id>http://hotpro.github.io/</id>
   <author>
     <name><![CDATA[Yutao Hou]]></name>
@@ -27,6 +27,53 @@
 <p>Docker, for me, is an application running on a computer, which provides you lots of isolated containers to run your applications. <a href="https://www.docker.com/">Docker</a></p>
 
 <p>They both have some bugs for now. I like docker more. I am now using a docker image, which has builtin octopress. Very handy. <a href="https://github.com/aratana/docker-octopress">Docker Octopress</a></p>
+
+<h2>Troubleshooting</h2>
+
+<h3>Vagrant</h3>
+
+<pre><code>vagrant SSH Timeout - Cant connect via ssh
+</code></pre>
+
+<p>refer to <a href="https://github.com/mitchellh/vagrant/issues/3860">https://github.com/mitchellh/vagrant/issues/3860</a></p>
+
+<h3>Octopress</h3>
+
+<pre><code>gem install bundler
+ERROR:  Loading command: install (LoadError)
+    cannot load such file -- zlib
+ERROR:  While executing gem ... (NameError)
+    uninitialized constant Gem::Commands::InstallCommand
+</code></pre>
+
+<p>zlib1g-dev needs to be installed before ruby is installed.
+<code>sudo apt-get install zlib1g-dev</code></p>
+
+<pre><code>bundle install
+Could not load OpenSSL.
+You must recompile Ruby with OpenSSL support or change the sources in your Gemfile from 'https'
+to 'http'. Instructions for compiling with OpenSSL using RVM are available at
+http://rvm.io/packages/openssl.
+</code></pre>
+
+<p>This is another dependency problem.
+Use this to solve both problems and some potential problems
+<code>sudo apt-get -y install build-essential zlib1g-dev libreadline-dev libssl-dev libcurl4-openssl-dev</code></p>
+
+<h3>Docker</h3>
+
+<pre><code>docker can't connect to boot2docker because of tcp timeout
+</code></pre>
+
+<p>solution:
+<code>
+boot2docker down # Shut down boot2docker VirtualBox bits
+sudo route -nv add -net 192.168.56 -interface vboxnet0 # Add a static route
+boot2docker up # Start up boot2docker, bring VirtualBox bits back up
+$(boot2docker shellinit)
+docker images # List images. This should just work.
+</code>
+refer to <a href="https://github.com/boot2docker/boot2docker/issues/392#issuecomment-54588412">https://github.com/boot2docker/boot2docker/issues/392#issuecomment-54588412</a></p>
 ]]></content>
   </entry>
   
