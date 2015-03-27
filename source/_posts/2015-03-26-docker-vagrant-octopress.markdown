@@ -14,3 +14,44 @@ At the beginning, I used vagrant to setup it. Vagrant is an actual virtual machi
 Docker, for me, is an application running on a computer, which provides you lots of isolated containers to run your applications. [Docker](https://www.docker.com/)
 
 They both have some bugs for now. I like docker more. I am now using a docker image, which has builtin octopress. Very handy. [Docker Octopress](https://github.com/aratana/docker-octopress)
+
+##Troubleshooting
+###Vagrant
+```
+vagrant SSH Timeout - Cant connect via ssh
+```
+refer to [https://github.com/mitchellh/vagrant/issues/3860](https://github.com/mitchellh/vagrant/issues/3860)
+###Octopress
+```
+gem install bundler
+ERROR:  Loading command: install (LoadError)
+    cannot load such file -- zlib
+ERROR:  While executing gem ... (NameError)
+    uninitialized constant Gem::Commands::InstallCommand
+```
+zlib1g-dev needs to be installed before ruby is installed.
+`sudo apt-get install zlib1g-dev`
+
+```
+bundle install
+Could not load OpenSSL.
+You must recompile Ruby with OpenSSL support or change the sources in your Gemfile from 'https'
+to 'http'. Instructions for compiling with OpenSSL using RVM are available at
+http://rvm.io/packages/openssl.
+```
+This is another dependency problem.
+Use this to solve both problems and some potential problems
+`sudo apt-get -y install build-essential zlib1g-dev libreadline-dev libssl-dev libcurl4-openssl-dev`
+###Docker
+```
+docker can't connect to boot2docker because of tcp timeout
+```
+solution:
+```
+boot2docker down # Shut down boot2docker VirtualBox bits
+sudo route -nv add -net 192.168.56 -interface vboxnet0 # Add a static route
+boot2docker up # Start up boot2docker, bring VirtualBox bits back up
+$(boot2docker shellinit)
+docker images # List images. This should just work.
+```
+refer to [https://github.com/boot2docker/boot2docker/issues/392#issuecomment-54588412](https://github.com/boot2docker/boot2docker/issues/392#issuecomment-54588412)
